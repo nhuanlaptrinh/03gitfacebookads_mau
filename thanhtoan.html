@@ -873,6 +873,28 @@
                 margin-top: 6px;
             }
             
+            /* Account Selector */
+            .account-selector {
+                padding: 18px 15px !important;
+                margin-bottom: 20px !important;
+            }
+            
+            .account-selector label:first-child {
+                font-size: 16px !important;
+                margin-bottom: 12px !important;
+            }
+            
+            .account-option {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                padding: 12px !important;
+            }
+            
+            .account-option input[type="radio"] {
+                margin-right: 0 !important;
+                margin-bottom: 10px !important;
+            }
+            
             /* Payment Code */
             .payment-code {
                 font-size: 20px;
@@ -1041,11 +1063,36 @@
                 <div class="bank-info">
                     <h4>💳 Thông tin nhận chuyển khoản</h4>
                     
+                    <!-- Chọn tài khoản -->
+                    <div class="account-selector" style="margin-bottom: 30px; padding: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; border: 2px solid #00786a;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: #00786a; margin-bottom: 15px; text-align: center;">
+                            <i class="fas fa-university"></i> Chọn tài khoản thanh toán:
+                        </label>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <label style="display: flex; align-items: center; padding: 15px; background: white; border-radius: 10px; cursor: pointer; transition: all 0.3s; border: 2px solid #e0e0e0;" class="account-option" onmouseover="this.style.borderColor='#00786a'; this.style.boxShadow='0 3px 10px rgba(0,120,106,0.2)';" onmouseout="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';">
+                                <input type="radio" name="account" value="thunhi" checked style="margin-right: 12px; width: 20px; height: 20px; cursor: pointer;" onchange="updateAccountInfo('thunhi')">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 17px; color: #333; margin-bottom: 5px;">Lê Thị Thu Nhi - Techcombank</div>
+                                    <div style="font-size: 14px; color: #666;">Số TK: 19034464432011</div>
+                                    <div style="font-size: 13px; color: #28a745; margin-top: 5px; font-weight: 500;">✓ Không cần xuất hóa đơn</div>
+                                </div>
+                            </label>
+                            <label style="display: flex; align-items: center; padding: 15px; background: white; border-radius: 10px; cursor: pointer; transition: all 0.3s; border: 2px solid #e0e0e0;" class="account-option" onmouseover="this.style.borderColor='#00786a'; this.style.boxShadow='0 3px 10px rgba(0,120,106,0.2)';" onmouseout="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';">
+                                <input type="radio" name="account" value="congty" style="margin-right: 12px; width: 20px; height: 20px; cursor: pointer;" onchange="updateAccountInfo('congty')">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 17px; color: #333; margin-bottom: 5px;">CÔNG TY TNHH ANH LẬP TRÌNH - MB Bank</div>
+                                    <div style="font-size: 14px; color: #666;">Số TK: 880208888</div>
+                                    <div style="font-size: 13px; color: #e74c3c; margin-top: 5px; font-weight: 500;">📄 Cần xuất hóa đơn</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
                     <!-- QR Code Section - Lên trên -->
                     <div class="qr-code-container">
                         <div class="qr-header">
                             <div class="qr-logo">
-                                <span class="bidv-logo">Techcombank</span>
+                                <span class="bidv-logo" id="bank-name-display">Techcombank</span>
                                 <div class="bidv-icon">★</div>
                             </div>
                             <div class="qr-header-divider" style="width: 2px; height: 35px; background: #e0e0e0; margin: 0 15px;"></div>
@@ -1054,7 +1101,7 @@
                             </div>
                         </div>
                         <div class="qr-code-wrapper">
-                            <img src="ThuNhi_1450K_TDHCV343.png" alt="QR Code Chuyển Khoản Techcombank" id="qrcode">
+                            <img src="ThuNhi_1450K_TDHCV343.png" alt="QR Code Chuyển Khoản" id="qrcode">
                         </div>
                     </div>
 
@@ -1063,21 +1110,28 @@
                         <p>
                             <strong>📌 Số Tài khoản:</strong>
                             <span id="account-number" style="color: #e74c3c; font-size: 22px; font-weight: bold; letter-spacing: 1px;">19034464432011</span>
-                            <button class="copy-btn" onclick="copyToClipboard('19034464432011', this)">📋 Copy</button>
+                            <button class="copy-btn" id="copy-account-number" onclick="copyAccountNumber()">📋 Copy</button>
                         </p>
                         <p>
                             <strong>👤 Tên người hưởng thụ:</strong>
                             <span id="account-name" style="color: #333; font-size: 19px; font-weight: 600;">Lê Thị Thu Nhi</span>
-                            <button class="copy-btn" onclick="copyToClipboard('Lê Thị Thu Nhi', this)">📋 Copy</button>
+                            <button class="copy-btn" id="copy-account-name" onclick="copyAccountName()">📋 Copy</button>
                         </p>
                         <p>
                             <strong>🏦 Ngân hàng:</strong>
-                            <span style="font-size: 18px; color: #333;">Techcombank</span>
+                            <span id="bank-name" style="font-size: 18px; color: #333;">Techcombank</span>
                         </p>
                         <p>
                             <strong>💬 Nội dung CK:</strong>
                             <span id="payment-content" style="color: #e74c3c; font-size: 20px; font-weight: bold; letter-spacing: 2px;">TDHCV343</span>
                             <button class="copy-btn" onclick="copyToClipboard('TDHCV343', this)">📋 Copy</button>
+                        </p>
+                    </div>
+                    
+                    <!-- Thông báo xuất hóa đơn -->
+                    <div id="invoice-notice" style="display: none; background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-left: 5px solid #ffc107; padding: 20px; border-radius: 12px; margin-top: 20px;">
+                        <p style="color: #856404; font-weight: bold; font-size: 17px; margin: 0; text-align: center; line-height: 1.6;">
+                            <i class="fas fa-file-invoice"></i> <strong>Lưu ý:</strong> Vui lòng yêu cầu xuất hóa đơn khi thanh toán qua tài khoản công ty. Hóa đơn sẽ được gửi qua email sau khi xác nhận thanh toán.
                         </p>
                     </div>
 
@@ -1150,6 +1204,85 @@
     </footer>
 
     <script>
+        // Dữ liệu tài khoản
+        const accountData = {
+            thunhi: {
+                qrCode: 'ThuNhi_1450K_TDHCV343.png',
+                accountNumber: '19034464432011',
+                accountName: 'Lê Thị Thu Nhi',
+                bankName: 'Techcombank',
+                needsInvoice: false
+            },
+            congty: {
+                qrCode: 'ALT_1450_TDHCV343.png',
+                accountNumber: '880208888',
+                accountName: 'CÔNG TY TNHH ANH LẬP TRÌNH',
+                bankName: 'MB Bank (Ngân hàng Quân Đội)',
+                needsInvoice: true
+            }
+        };
+        
+        // Hàm cập nhật thông tin tài khoản
+        function updateAccountInfo(accountType) {
+            const account = accountData[accountType];
+            if (!account) return;
+            
+            // Cập nhật QR code
+            const qrImg = document.getElementById('qrcode');
+            if (qrImg) {
+                qrImg.src = account.qrCode;
+                qrImg.alt = `QR Code Chuyển Khoản ${account.bankName}`;
+            }
+            
+            // Cập nhật số tài khoản
+            const accountNumberSpan = document.getElementById('account-number');
+            if (accountNumberSpan) {
+                accountNumberSpan.textContent = account.accountNumber;
+            }
+            
+            // Cập nhật tên chủ tài khoản
+            const accountNameSpan = document.getElementById('account-name');
+            if (accountNameSpan) {
+                accountNameSpan.textContent = account.accountName;
+            }
+            
+            // Cập nhật tên ngân hàng
+            const bankNameSpan = document.getElementById('bank-name');
+            if (bankNameSpan) {
+                bankNameSpan.textContent = account.bankName;
+            }
+            
+            // Cập nhật tên ngân hàng trong header QR
+            const bankNameDisplay = document.getElementById('bank-name-display');
+            if (bankNameDisplay) {
+                bankNameDisplay.textContent = account.bankName;
+            }
+            
+            // Hiển thị/ẩn thông báo xuất hóa đơn
+            const invoiceNotice = document.getElementById('invoice-notice');
+            if (invoiceNotice) {
+                invoiceNotice.style.display = account.needsInvoice ? 'block' : 'none';
+            }
+        }
+        
+        // Hàm copy số tài khoản
+        function copyAccountNumber() {
+            const accountType = document.querySelector('input[name="account"]:checked').value;
+            const account = accountData[accountType];
+            if (account) {
+                copyToClipboard(account.accountNumber, document.getElementById('copy-account-number'));
+            }
+        }
+        
+        // Hàm copy tên chủ tài khoản
+        function copyAccountName() {
+            const accountType = document.querySelector('input[name="account"]:checked').value;
+            const account = accountData[accountType];
+            if (account) {
+                copyToClipboard(account.accountName, document.getElementById('copy-account-name'));
+            }
+        }
+        
         // Hàm copy vào clipboard
         function copyToClipboard(text, button) {
             // Sử dụng Clipboard API (hiện đại)
