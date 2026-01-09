@@ -1,0 +1,59 @@
+# PowerShell script to start HTTP server
+$port = 8003
+
+# Get the directory where this script is located
+$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "Starting HTTP Server" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "Port: $port" -ForegroundColor Yellow
+Write-Host "Directory: $scriptPath" -ForegroundColor Yellow
+Write-Host "Website URL: http://localhost:$port" -ForegroundColor Green
+Write-Host "Press Ctrl+C to stop the server" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Change to script directory
+Set-Location $scriptPath
+
+# Try Python first
+try {
+    python -m http.server $port
+} catch {
+    # If Python fails, try Python3
+    try {
+        python3 -m http.server $port
+    } catch {
+        Write-Host "Python not found. Trying alternative method..." -ForegroundColor Red
+        # Alternative: Use .NET HttpListener
+        $listener = New-Object System.Net.HttpListener
+        $listener.Prefixes.Add("http://localhost:$port/")
+        $listener.Start()
+        Write-Host "Server started at http://localhost:$port" -ForegroundColor Green
+        
+        while ($listener.IsListening) {
+            $context = $listener.GetContext()
+            $request = $context.Request
+            $response = $context.Response
+            
+            $localPath = $request.Url.LocalPath
+            if ($localPath -eq "/") { $localPath = "/index.html" }
+            
+            $filePath = Join-Path $scriptPath $localPath.TrimStart('/')
+            
+            if (Test-Path $filePath) {
+                $content = [System.IO.File]::ReadAllBytes($filePath)
+                $response.ContentLength64 = $content.Length
+                $response.OutputStream.Write($content, 0, $content.Length)
+            } else {
+                $response.StatusCode = 404
+                $notFound = [System.Text.Encoding]::UTF8.GetBytes("404 Not Found")
+                $response.OutputStream.Write($notFound, 0, $notFound.Length)
+            }
+            
+            $response.Close()
+        }
+    }
+}
+

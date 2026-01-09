@@ -1090,16 +1090,6 @@
                     
                     <!-- QR Code Section - Lên trên -->
                     <div class="qr-code-container">
-                        <div class="qr-header">
-                            <div class="qr-logo">
-                                <span class="bidv-logo" id="bank-name-display">Techcombank</span>
-                                <div class="bidv-icon">★</div>
-                            </div>
-                            <div class="qr-header-divider" style="width: 2px; height: 35px; background: #e0e0e0; margin: 0 15px;"></div>
-                            <div class="qr-logo">
-                                <span class="vietqr-logo">VIETQR</span>
-                            </div>
-                        </div>
                         <div class="qr-code-wrapper">
                             <img src="ThuNhi_1450K_TDHCV343.png" alt="QR Code Chuyển Khoản" id="qrcode">
                         </div>
@@ -1217,7 +1207,7 @@
                 qrCode: 'ALT_1450_TDHCV343.png',
                 accountNumber: '880208888',
                 accountName: 'CÔNG TY TNHH ANH LẬP TRÌNH',
-                bankName: 'MB Bank (Ngân hàng Quân Đội)',
+                bankName: 'MB Bank',
                 needsInvoice: true
             }
         };
@@ -1250,12 +1240,6 @@
             const bankNameSpan = document.getElementById('bank-name');
             if (bankNameSpan) {
                 bankNameSpan.textContent = account.bankName;
-            }
-            
-            // Cập nhật tên ngân hàng trong header QR
-            const bankNameDisplay = document.getElementById('bank-name-display');
-            if (bankNameDisplay) {
-                bankNameDisplay.textContent = account.bankName;
             }
             
             // Hiển thị/ẩn thông báo xuất hóa đơn

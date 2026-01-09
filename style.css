@@ -611,6 +611,17 @@ section {
     font-style: italic;
 }
 
+.registration-form .guarantee-text {
+    text-align: center;
+    font-size: 16px;
+    color: #00786a;
+    margin: 10px 0;
+    padding: 0;
+    background: transparent;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
 .registration-form h3 {
     color: #00786a;
     font-size: 28px;
